@@ -10,6 +10,24 @@ export class App extends Component {
     locations:[]
   }
 
+  addPlayer = (name, locationId) =>{
+    console.log("sent")
+     const data = { name , locationId}
+    fetch("http://localhost:3000/players",{
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(data)
+    })
+    .then(resp => resp.json())
+    .then(fetch("http://localhost:3000/locations")
+        .then(res => res.json())
+        .then(locations => this.setState({locations})))
+
+  }
+
   componentDidMount(){
     fetch("http://localhost:3000/locations")
         .then(res => res.json())
@@ -17,18 +35,18 @@ export class App extends Component {
   }
   render() {
     console.log(this.state)
-    debugger
     return (
       <Router>
-      {this.state.locations.length > 0 ?
+      {/* {this.state.locations.length > 0 ? */}
       <div>
       <Link to="/"><button>Home</button></Link>
       <Switch>
-          <Route path="/locations/:id" render={({ match })=>(<LocationShow  {...this.state.locations.find(l => l.id === parseInt(match.params.id))} />)} />  
+          <Route path="/locations/:id" render={({ match })=>(<LocationShow addPlayer={this.addPlayer} {...this.state.locations.find(l => l.id === parseInt(match.params.id))} />)} />  
           <Route path="/" render={ ()=>(<LocationIndex locations = {this.state.locations}/>)} /> 
       </Switch>
-      </div>  : <h1>Loading</h1>
-    }
+      </div>  
+      {/* : <h1>Loading</h1>
+    } */}
       
     </Router>
     )
