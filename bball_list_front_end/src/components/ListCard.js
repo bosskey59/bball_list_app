@@ -7,6 +7,7 @@ export default function ListCard(props) {
       };
  
     return (
+        <>
         <table style={tableStyle}>
             <tbody>
                 <tr>
@@ -15,5 +16,6 @@ export default function ListCard(props) {
                 {props.list.players.map((p, index) => <tr key={p.id}><td>{index+1}.</td><td>{p.name}</td></tr>)}
             </tbody>
         </table>
+        </>
     )
 }
